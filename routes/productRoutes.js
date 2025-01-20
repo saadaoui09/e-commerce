@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Create a new product
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/add', upload.single('image'), async (req, res) => {
   try {
     const product = new Product({
       name: req.body.name,

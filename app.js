@@ -9,7 +9,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve image files
-app.use('/api/products', productRoutes);
+app.use('/api', productRoutes);
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/productsDB', { useNewUrlParser: true, useUnifiedTopology: true })
