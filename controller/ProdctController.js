@@ -24,35 +24,34 @@ exports.uploadImages = async (req, res) => {
   const files = req.files;
 
   try {
-    const product = await Product.findById(productId);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+      const product = await Product.findById(productId);
+      if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    if (!files || files.length === 0) return res.status(400).json({ message: 'No files uploaded' });
+      if (!files || files.length === 0) return res.status(409).json({ message: 'No files uploaded' });
 
-    const imagePaths = files.map(file => `/uploads/${file.filename}`);
+      const imagePaths = files.map(file => `/uploads/${file.filename}`);
 
-    // Assuming `ProductImage` is a model for storing images
+    // Assuming 'ProductImage' is a model for storing images
     for (const imagePath of imagePaths) {
       await ProductImage.create({ productId, imageUrl: imagePath });
-    }
-
-    res.status(201).json({ message: 'Images uploaded successfully', images: imagePaths });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
   }
-};
 
+  res.status(201).json({ message: 'Images uploaded successfully', images: imagePaths });
+} catch (err) {
+  res.status(500).json({ message: 'Server error', error: err.message });
+}
+};
 // Get a single product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
-    res.status(200).json(product);
+      const product = await Product.findById(req.params.id);
+      if (!product) return res.status(404).json({ message: 'Product not found' });
+
+      res.status(200).json(product);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
   }
 };
-
 // Update a product
 exports.updateProduct = async (req, res) => {
   try {
